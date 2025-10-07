@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ILHAM FADHILAH — Website Pribadi</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    :root {
+      --bg: #0f1724;
+      --card: #0b1230;
+      --accent: #eab308;
+      --muted: #9ca3af;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      margin: 0;
+      background: linear-gradient(180deg,#071127 0%,#081226 50%,#06111f 100%);
+      color: #e6eef8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      background: linear-gradient(90deg,rgba(255,255,255,0.02),transparent);
+      backdrop-filter: blur(6px);
+    }
+
+    .brand { display: flex; gap: 14px; align-items: center; }
+    .logo {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: linear-gradient(135deg,var(--accent),#ff7a18);
+      display: grid; place-items: center; font-weight: 700; color: #041018;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      position: relative;
+      align-items: center;
+    }
+    nav button {
+      background: transparent;
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    nav button.active {
+      color: var(--accent);
+      background: var(--glass);
+    }
+
+    /* Dropdown container */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Dropdown content (hidden by default) */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--card);
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      z-index: 100;
+      margin-top: 8px;
+      padding: 6px 0;
+    }
+
+    /* Dropdown items */
+    .dropdown-content .dropdown-item {
+      background: transparent;
+      border: 0;
+      width: 100%;
+      padding: 10px 16px;
+      text-align: left;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 600;
+      border-radius: 0;
+      transition: background-color 0.2s;
+    }
+
+    .dropdown-content .dropdown-item:hover {
+      background-color: var(--glass);
+      color: var(--accent);
+    }
+
+    /* Show dropdown on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Make sure dropdown button gets active style on hover */
+    .dropdown-btn:hover,
+    .dropdown:hover > .dropdown-btn {
+      color: var(--accent);
+      background: var(--glass);
+    }
+
+    /* Make dropdown button not active by default */
+    .nav-btn.active.dropdown-btn {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    main { padding: 34px; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 6px 24px rgba(2,6,23,0.6);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+    }
+
+    .avatar {
+      width: 126px;
+      height: 126px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .meta h1 { margin: 0; font-size: 24px; }
+    .meta p { color: var(--muted); margin-top: 6px; }
+
+    h3.my-hobbies-title {
+      margin: 0 0 8px 0;
+    }
+
+    .hobby-badge {
+      display: inline-block;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px dashed rgba(255,255,255,0.03);
+    }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .lyrics {
+      white-space: pre-wrap;
+      color: #f8fafc;
+      margin-top: 12px;
+    }
+
+    footer {
+      padding: 20px 28px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .brand { gap: 10px; }
+      .logo { width: 44px; height: 44px; }
+    }
+
+    @media (max-width: 600px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+
+    .view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .view.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Form input styles */
+    input[type=number] {
+      font-family: inherit;
+      font-size: 16px;
+      color: #e6eef8;
+      background: #18223a;
+      border: none;
+    }
+
+    input[type=number]:focus {
+      outline: 2px solid var(--accent);
+      background: #0f1724;
+    }
+
+    button[type=submit] {
+      transition: background-color 0.3s ease;
+    }
+    button[type=submit]:hover {
+      background-color: #d4a90f;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">IF</div>
+      <div>
+        <div style="font-weight:700">ILHAM FADHILAH</div>
+        <div style="font-size:12px;color:var(--muted)">XII DKV 2</div>
+      </div>
+    </div>
+    <nav>
+      <button class="nav-btn active" data-target="about">About Me</button>
+      <button class="nav-btn" data-target="schedule">Jadwal Pelajaran</button>
+      <button class="nav-btn" data-target="anthem">Indonesia Raya</button>
+
+      <div class="dropdown">
+        <button class="nav-btn dropdown-btn">Menghitung ▾</button>
+        <div class="dropdown-content">
+          <button class="dropdown-item" data-target="luas-persegi">Luas Persegi</button>
+          <button class="dropdown-item" data-target="volume-kotak">Volume Kotak</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- About -->
+    <section id="about" class="card view active">
+      <div class="grid">
+        <div>
+          <div style="display:flex;gap:18px;align-items:center">
+            
+            <div class="meta">
+              <h1>Halo — Saya Ilham Fadhilah</h1>
+              <p>Seorang pelajar jurusan Desain Komunikasi Visual di SMKN 1 Kota Tangerang. Saya lahir di Tangerang 19 Januari 2008, dan sekarang tengah menempuh pendidikan di kelas 12 SMK.</p>
+            </div>
+          </div>
+
+          <div style="margin-top:18px">
+            <h3 class="my-hobbies-title">MY Hobbies</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span class="hobby-badge" style="background:#ef444433">Netflix</span>
+              <span class="hobby-badge" style="background:#3b82f633">Formula 1 Fans</span>
+              <span class="hobby-badge" style="background:#22c55e33">Hala Madrid</span>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">Informasi</div>
+          <table>
+            <tbody>
+              <tr>
+                <th>Nama</th>
+                <td>Ilham Fadhilah</td>
+              </tr>
+              <tr>
+                <th>Born</th>
+                <td>Tangerang, 19 Januari 2008</td>
+              </tr>
+              <tr>
+                <th>Alamat</th>
+                <td>JL. Aria Santika No 16, Kota Tangerang</td>
+              </tr>
+              <tr>
+                <th>Hobby</th>
+                <td>Netflix, Formula 1, Hala Madrid</td>
+              </tr>
+            </tbody>
+          </table>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Jadwal Pelajaran -->
+    <section id="schedule" class="card view">
+      <h2>Jadwal Pelajaran</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Hari</th>
+            <th>Pelajaran</th>
+            <th>Jam</th>
+            <th>Guru</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body">
+          <!-- Data jadwal akan diisi oleh JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Indonesia Raya -->
+    <section id="anthem" class="card view">
+      <h2>Indonesia Raya</h2>
+      <div class="lyrics">
+        Indonesia tanah airku, tanah tumpah darahku,<br>
+        Di sanalah aku berdiri, jadi pandu ibuku.<br><br>
+        Indonesia kebangsaanku, bangsa dan tanah airku,<br>
+        Marilah kita berseru: Indonesia bersatu!<br><br>
+        Hiduplah tanahku, hiduplah negriku,<br>
+        Bangsaku, rakyatku, semuanya.<br><br>
+        Bangunlah jiwanya, bangunlah badannya,<br>
+        Untuk Indonesia Raya.
+      </div>
+    </section>
+
+    <!-- Luas Persegi -->
+    <section id="luas-persegi" class="card view">
+      <h2>Hitung Luas Persegi</h2>
+      
+
+    <!-- Volume Kotak -->
+    <section id="volume-kotak" class="card view">
+      <h2>Hitung Volume Kotak</h2>
+      
+  <footer>
+    &copy; <span id="year"></span> Ilham Fadhilah
+  </footer>
+
+  <script>
+    // Schedule data
+    const schedule = [
+      ["Senin", "Matematika", "07:00 - 08:30", "Pak Budi"],
+      ["Selasa", "Bahasa Indonesia", "08:30 - 10:00", "Bu Sari"],
+      ["Rabu", "Bahasa Inggris", "10:00 - 11:30", "Pak John"],
+      ["Kamis", "Fisika", "11:30 - 13:00", "Bu Lina"],
+      ["Jumat", "Kimia", "13:00 - 14:30", "Pak Agus"],
+    ];
+
+    function renderSchedule() {
+      const tbody = document.getElementById('schedule-body');
+      tbody.innerHTML = '';
+      schedule.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+    renderSchedule();
+
+    // Navigation
+    const navButtons = document.querySelectorAll('nav > .nav-btn:not(.dropdown-btn)');
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all nav buttons
+        navButtons.forEach(b => b.classList.remove('active'));
+        // Also remove active from dropdown-btn
+        document.querySelector('.dropdown-btn').classList.remove('active');
+
+        btn.classList.add('active');
+
+        // Show corresponding view
+        const target = btn.dataset.target;
+        document.querySelectorAll('.view').forEach(view => {
+          view.classList.toggle('active', view.id === target);
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Dropdown items click (Menghitung submenu)
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove active from all nav buttons including dropdown-btn
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+
+        // Show dropdown button as active (optional)
+        document.querySelector('.dropdown-btn').classList.add('active');
+
+        // Show target view
+        const target = item.dataset.target;
+        document.querySelectorAll('.view').forEach(view => {
+          view.classList.toggle('active', view.id === target);
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Hitung luas persegi
+    document.getElementById('form-luas-persegi').addEventListener('submit', e => {
+      e.preventDefault();
+      const sisi = parseFloat(document.getElementById('sisi').value);
+      if (sisi >= 0) {
+        const luas = sisi * sisi;
+        document.getElementById('hasil-luas').textContent = `Luas persegi dengan sisi ${sisi} cm adalah ${luas.toFixed(2)} cm².`;
+      } else {
+        document.getElementById('hasil-luas').textContent = 'Masukkan nilai sisi yang valid.';
+      }
+    });
+
+    // Hitung volume kotak
+    document.getElementById('form-volume-kotak').addEventListener('submit', e => {
+      e.preventDefault();
+      const panjang = parseFloat(document.getElementById('panjang').value);
+      const lebar = parseFloat(document.getElementById('lebar').value);
+      const tinggi = parseFloat(document.getElementById('tinggi').value);
+
+      if (panjang >= 0 && lebar >= 0 && tinggi >= 0) {
+        const volume = panjang * lebar * tinggi;
+        document.getElementById('hasil-volume').textContent = `Volume kotak adalah ${volume.toFixed(2)} cm³.`;
+      } else {
+        document.getElementById('hasil-volume').textContent = 'Masukkan nilai yang valid untuk semua sisi.';
+      }
+    });
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
